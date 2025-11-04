@@ -5,8 +5,8 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'Harmony',
-  tagline: 'The open source data proxy',
+  title: 'Runbeam',
+  tagline: 'Turn Complex Integrations Into Simple Connections',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -15,15 +15,15 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://your-docusaurus-site.example.com',
+  url: 'https://docs.runbeam.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'aurabx', // Usually your GitHub org/user name.
+  projectName: 'docs', // Usually your repo name.
 
   onBrokenLinks: 'throw',
 
@@ -40,17 +40,45 @@ const config: Config = {
       'classic',
       {
         docs: {
+          path: 'docs',
+          routeBasePath: 'runbeam',
           sidebarPath: './sidebars.ts',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          // editUrl:
-          //   'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
         blog: false,
         theme: {
-          customCss: './src/css/custom.css',
+          customCss: ['./src/css/custom.css', './static/fonts.css'],
         },
       } satisfies Preset.Options,
+    ],
+  ],
+
+  plugins: [
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'harmony',
+        path: 'harmony',
+        routeBasePath: 'harmony',
+        sidebarPath: './sidebars-harmony.ts',
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'cli',
+        path: 'cli',
+        routeBasePath: 'cli',
+        sidebarPath: './sidebars-cli.ts',
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'sdk',
+        path: 'sdk',
+        routeBasePath: 'sdk',
+        sidebarPath: './sidebars-sdk.ts',
+      },
     ],
   ],
 
@@ -61,20 +89,46 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'Harmony',
+      title: 'Runbeam',
       logo: {
-        alt: 'Harmony Logo',
+        alt: 'Runbeam Logo',
         src: 'img/logo.svg',
       },
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'docsSidebar',
           position: 'left',
-          label: 'Tutorial',
+          label: 'Runbeam',
         },
         {
-          href: 'https://github.com/facebook/docusaurus',
+          type: 'docSidebar',
+          sidebarId: 'harmonySidebar',
+          docsPluginId: 'harmony',
+          position: 'left',
+          label: 'Harmony',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'cliSidebar',
+          docsPluginId: 'cli',
+          position: 'left',
+          label: 'CLI',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'sdkSidebar',
+          docsPluginId: 'sdk',
+          position: 'left',
+          label: 'SDK',
+        },
+        {
+          href: 'https://runbeam.io',
+          label: 'Runbeam Cloud',
+          position: 'right',
+        },
+        {
+          href: 'https://github.com/aurabx/harmony',
           label: 'GitHub',
           position: 'right',
         },
@@ -87,25 +141,33 @@ const config: Config = {
           title: 'Docs',
           items: [
             {
-              label: 'Tutorial',
-              to: '/docs/intro',
+              label: 'Getting Started',
+              to: '/runbeam/intro',
+            },
+            {
+              label: 'Harmony Proxy',
+              to: '/harmony',
+            },
+            {
+              label: 'CLI',
+              to: '/cli',
+            },
+            {
+              label: 'SDK',
+              to: '/sdk',
             },
           ],
         },
         {
-          title: 'Community',
+          title: 'Products',
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              label: 'Runbeam Cloud',
+              href: 'https://runbeam.io',
             },
             {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            },
-            {
-              label: 'X',
-              href: 'https://x.com/docusaurus',
+              label: 'Harmony Proxy',
+              href: 'https://runbeam.io/harmony-proxy',
             },
           ],
         },
@@ -114,12 +176,16 @@ const config: Config = {
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/aurabx/harmony',
+            },
+            {
+              label: 'Support',
+              href: 'mailto:hello@aurabox.cloud',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} <a href="https://aurabox.cloud" target="_blank" rel="noopener noreferrer">Aurabox Pty Ltd</a>.`,
     },
     prism: {
       theme: prismThemes.github,

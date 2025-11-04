@@ -2,46 +2,102 @@
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+# Welcome to Runbeam
 
-Let's discover **Docusaurus in less than 5 minutes**.
+Runbeam is a comprehensive platform for building secure, scalable data integration systems with first-class healthcare support.
 
-## Getting Started
+## The Runbeam Ecosystem
 
-Get started by **creating a new site**.
+The Runbeam platform consists of four key components:
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+### Runbeam Cloud
 
-### What you'll need
+**Centralized management platform** for your data integration infrastructure.
 
-- [Node.js](https://nodejs.org/en/download/) version 20.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+- Manage gateways, services, and endpoints from a single control plane
+- Team collaboration and access control
+- API access for programmatic configuration
+- Monitor and track your integration health
 
-## Generate a new site
+[Learn more about Runbeam Cloud →](/docs/runbeam/overview)
 
-Generate a new Docusaurus site using the **classic template**.
+### Harmony Proxy
 
-The classic template will automatically be added to your project after you run the command:
+**Production-ready data mesh proxy** for heterogeneous systems.
 
-```bash
-npm init docusaurus@latest my-website classic
-```
+- Multi-protocol support: HTTP/JSON, FHIR, DICOM/DICOMweb, JMIX
+- Configurable pipelines with ordered middleware
+- Hot configuration reload for zero-downtime updates
+- Secure authentication with JWT and machine tokens
+- JSON transformations (JOLT) and protocol bridging
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+[Get started with Harmony →](/docs/harmony/overview)
 
-The command also installs all necessary dependencies you need to run Docusaurus.
+### Runbeam CLI
 
-## Start your site
+**Command-line tool** for managing Harmony instances and Runbeam Cloud.
 
-Run the development server:
+- Browser-based OAuth authentication
+- Add and manage Harmony instances
+- Authorize gateways with secure token management
+- Query instance configuration and health
+- Built-in encryption key management
 
-```bash
-cd my-website
-npm run start
-```
+[Install the CLI →](/docs/cli/overview)
 
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
+### Runbeam SDK
 
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
+**Rust library** for integrating with the Runbeam Cloud API.
 
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+- Dual authentication: JWT tokens and Laravel Sanctum
+- Comprehensive API client for gateway and service management
+- Secure token storage with OS keychain integration
+- Machine token handling for autonomous authentication
+- Cross-platform: macOS, Linux, and Windows
+
+[Explore the SDK →](/docs/sdk/overview)
+
+## How It Works
+
+The Runbeam ecosystem connects cloud management with edge data processing:
+
+1. **Configure** your data integration in Runbeam Cloud
+2. **Deploy** Harmony Proxy instances at your data sources
+3. **Authorize** gateways using the CLI or SDK
+4. **Process** data through configurable pipelines with zero-downtime updates
+
+## Key Features
+
+- 🔒 **Secure by Default** - JWT authentication, encrypted token storage, machine-scoped credentials
+- 🏥 **Healthcare First** - Native FHIR, DICOM/DICOMweb, and JMIX support
+- 🔄 **Hot Reload** - Update configuration without restarting services
+- 🎯 **Protocol Agnostic** - Bridge between HTTP/JSON, FHIR, DICOM, and custom protocols
+- 🚀 **Production Ready** - Structured logging, robust error handling, battle-tested
+- 🔧 **Extensible** - Plugin architecture for custom middleware and backends
+
+## Next Steps
+
+<div className="row">
+  <div className="col col--6">
+    <h3>New to Runbeam?</h3>
+    <ul>
+      <li><a href="/docs/runbeam/overview">Explore Runbeam Cloud</a></li>
+      <li><a href="/docs/harmony/quickstart">Deploy your first Harmony instance</a></li>
+      <li><a href="/docs/concepts/authentication">Understand authentication</a></li>
+    </ul>
+  </div>
+  <div className="col col--6">
+    <h3>Ready to Integrate?</h3>
+    <ul>
+      <li><a href="/docs/cli/installation">Install the CLI</a></li>
+      <li><a href="/docs/sdk/installation">Add the SDK to your project</a></li>
+      <li><a href="/docs/harmony/configuration">Configure Harmony</a></li>
+    </ul>
+  </div>
+</div>
+
+## Support
+
+- **General Questions**: hello@aurabox.cloud
+- **GitHub**: [github.com/aurabx/harmony](https://github.com/aurabx/harmony)
+- **Website**: [harmonyproxy.com](https://harmonyproxy.com)

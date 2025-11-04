@@ -14,14 +14,20 @@ function HomepageHeader() {
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
         <Heading as="h1" className="hero__title">
-          {siteConfig.title}
+          Documentation
         </Heading>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/intro">
-            Docusaurus Tutorial - 5min ⏱️
+            to="/runbeam/intro">
+            Get Started →
+          </Link>
+          <Link
+            className="button button--outline button--lg"
+            to="/harmony/overview"
+            style={{marginLeft: '1rem'}}>
+            View Harmony Docs
           </Link>
         </div>
       </div>
@@ -33,8 +39,8 @@ export default function Home(): ReactNode {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      title={`Welcome to ${siteConfig.title}`}
+      description="Runbeam Cloud and Harmony Proxy - Secure data integration platform with first-class healthcare support">
       <HomepageHeader />
       <main>
         <HomepageFeatures />
