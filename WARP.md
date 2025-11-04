@@ -1,5 +1,7 @@
 # Warp AI Rules for docs
 
+Always follow the rules defined in .ai/rules.md
+
 ## Project Overview
 This is the documentation project for runbeam.
 
