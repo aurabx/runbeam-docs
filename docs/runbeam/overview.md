@@ -58,14 +58,13 @@ Built-in security features:
 
 ## Architecture
 
-```
-Runbeam Cloud (Control Plane)
-        ↓
-   Configuration API
-        ↓
-   Harmony Gateway (Edge)
-        ↓
-   Your Data Sources
+```mermaid
+graph TD
+    A[Runbeam Cloud<br/>Control Plane] --> B[Configuration API]
+    B --> C[Harmony Gateway<br/>Edge]
+    C --> D[Your Data Sources]
+    
+    classDef default fill:#7a7df1,stroke:#fff,stroke-width:2px,color:#fff,fontSize:18px
 ```
 
 Runbeam Cloud never touches your data - it only manages configuration. Harmony Proxy runs at the edge, near your data sources, and processes requests locally.

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 6
 ---
 
 # Middleware
@@ -12,8 +12,14 @@ Middleware operates within Harmony's pipeline executor and processes envelopes f
 
 ### Pipeline Flow
 
-```
-Request → Incoming Middleware → Backend → Outgoing Middleware → Response
+```mermaid
+graph LR
+    A[Request] --> B[Incoming Middleware]
+    B --> C[Backend]
+    C --> D[Outgoing Middleware]
+    D --> E[Response]
+    
+    classDef default fill:#7a7df1,stroke:#fff,stroke-width:2px,color:#fff,fontSize:18px
 ```
 
 **Middleware types**:
@@ -379,6 +385,8 @@ apply = "right"
 
 ## Next Steps
 
-- [View configuration examples →](../configuration)
+- [View configuration examples →](./configuration/)
 - [Learn about services and backends →](./services)
+- [Learn about authentication →](./authentication)
+- [Learn about transforms →](./transforms)
 - [See complete examples on GitHub →](https://github.com/aurabx/harmony/tree/main/examples)

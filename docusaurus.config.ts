@@ -52,6 +52,12 @@ const config: Config = {
     ],
   ],
 
+  themes: ['@docusaurus/theme-mermaid'],
+
+  markdown: {
+    mermaid: true,
+  },
+
   plugins: [
     [
       '@docusaurus/plugin-content-docs',

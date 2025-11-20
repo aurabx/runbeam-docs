@@ -20,8 +20,14 @@ Harmony Proxy is an extensible data mesh proxy/gateway for heterogeneous systems
 
 Harmony uses a pipeline architecture:
 
-```
-Request → Endpoint → Middleware Chain → Backend → Response
+```mermaid
+graph LR
+    A[Request] --> B[Endpoint]
+    B --> C[Middleware Chain]
+    C --> D[Backend]
+    D --> E[Response]
+    
+    classDef default fill:#7a7df1,stroke:#fff,stroke-width:2px,color:#fff,fontSize:18px
 ```
 
 1. **Endpoints** - Define public-facing routes and protocols

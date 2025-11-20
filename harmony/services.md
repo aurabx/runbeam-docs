@@ -1,13 +1,20 @@
 ---
-sidebar_position: 1
+sidebar_position: 5
 ---
 
 # Services
 
 Services are the core building blocks of Harmony's data pipeline architecture. They define how data enters Harmony (via **Endpoints**) and how Harmony communicates with external systems (via **Backends**).
 
-```
-Protocol Request → Endpoint → RequestEnvelope → Pipeline → Backend → External Target
+```mermaid
+graph LR
+    A[Protocol Request] --> B[Endpoint]
+    B --> C[RequestEnvelope]
+    C --> D[Pipeline]
+    D --> E[Backend]
+    E --> F[External Target]
+    
+    classDef default fill:#7a7df1,stroke:#fff,stroke-width:2px,color:#fff,fontSize:18px
 ```
 
 ## Endpoints
@@ -18,8 +25,14 @@ Endpoints define protocol entry points into the Harmony pipeline. Each endpoint 
 
 Endpoints work with Protocol Adapters to process requests:
 
-```
-Protocol Request → Protocol Adapter → Service → RequestEnvelope → Pipeline
+```mermaid
+graph LR
+    A[Protocol Request] --> B[Protocol Adapter]
+    B --> C[Service]
+    C --> D[RequestEnvelope]
+    D --> E[Pipeline]
+    
+    classDef default fill:#7a7df1,stroke:#fff,stroke-width:2px,color:#fff,fontSize:18px
 ```
 
 The endpoint configuration specifies:
@@ -29,12 +42,42 @@ The endpoint configuration specifies:
 
 ### HTTP (Passthru)
 
-A basic HTTP endpoint for generic HTTP traffic.
+A basic HTTP endpoint for generic HTTP traffic with automatic multi-format support.
 
 **Service behavior:**
 - Accepts an HTTP request and converts it into a `RequestEnvelope`
 - Takes a `ResponseEnvelope` and converts it into an HTTP response
 - Preserves headers, query parameters, and body
+- Automatically parses multiple content types
+
+**Supported Content Types:**
+
+1. **JSON** (`application/json`, `application/fhir+json`, `application/dicom+json`)
+   - Direct pass-through to normalized data
+   - Default when Content-Type missing
+
+2. **XML** (`application/xml`, `text/xml`, `application/soap+xml`)
+   - Converted to JSON structure
+   - Attributes prefixed with `@`
+   - XXE attack prevention enabled
+
+3. **CSV** (`text/csv`)
+   - Parsed into array of row objects
+   - First row treated as header
+   - Formula injection prevention (fields starting with `=`, `+`, `-`, `@` are escaped)
+
+4. **Form URL-Encoded** (`application/x-www-form-urlencoded`)
+   - Converted to flat JSON object
+   - Array notation supported with `[]`
+
+5. **Multipart Form Data** (`multipart/form-data`)
+   - Fields and files separated in normalized structure
+   - File metadata captured (filename, content_type, size, checksum)
+   - Files NOT saved to disk automatically
+
+6. **Binary Content** (`image/*`, `video/*`, `audio/*`, `application/pdf`, `application/octet-stream`)
+   - Binary data preserved in envelope
+   - Metadata extracted (content_type, size, checksum)
 
 **Configuration:**
 ```toml
@@ -42,6 +85,16 @@ A basic HTTP endpoint for generic HTTP traffic.
 service = "http"
 [endpoints.api_passthrough.options]
 path_prefix = "/api"
+```
+
+**Content Limits:**
+```toml
+[proxy.content_limits]
+max_body_size = 10485760      # 10MB (default)
+max_csv_rows = 10000           # Maximum CSV rows
+max_xml_depth = 100            # Maximum XML nesting
+max_multipart_files = 10       # Maximum files per upload
+max_form_fields = 1000         # Maximum form fields
 ```
 
 ### FHIR
@@ -153,8 +206,13 @@ Backends enable the pipeline to communicate with external systems (targets). Bac
 
 ### Architecture
 
-```
-RequestEnvelope → Backend Service → External Target → ResponseEnvelope
+```mermaid
+graph LR
+    A[RequestEnvelope] --> B[Backend Service]
+    B --> C[External Target]
+    C --> D[ResponseEnvelope]
+    
+    classDef default fill:#7a7df1,stroke:#fff,stroke-width:2px,color:#fff,fontSize:18px
 ```
 
 **Backend responsibilities:**
@@ -303,6 +361,6 @@ url = "https://api2.example.com"
 
 ## Related Documentation
 
-- [Configuration](../configuration) - Complete configuration guide
-- [Middleware](../configuration/middleware) - Request/response transformation
+- [Configuration](./configuration/) - Complete configuration guide
+- [Middleware](./middleware) - Request/response transformation
 - [Authentication](./authentication) - Security and auth setup
