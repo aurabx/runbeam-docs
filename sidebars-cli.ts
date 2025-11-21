@@ -7,6 +7,16 @@ const sidebars: SidebarsConfig = {
       id: 'overview',
       label: 'Overview',
     },
+    {
+      type: 'doc',
+      id: 'commands',
+      label: 'Commands Reference',
+    },
+    {
+      type: 'doc',
+      id: 'authorization',
+      label: 'Authorization Guide',
+    },
   ],
 };
 

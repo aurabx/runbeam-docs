@@ -39,45 +39,53 @@ The Runbeam CLI is a cross-platform command-line tool that simplifies working wi
 
 ## Installation
 
-### Download from GitHub Releases
+### Quick Install (Recommended)
 
-Visit the [GitHub Releases page](https://github.com/aurabx/runbeam-cli/releases) and download the appropriate binary for your platform:
+Use the automated installation script for macOS and Linux:
 
-#### macOS
 ```bash
-# Download and verify
-wget https://github.com/aurabx/runbeam-cli/releases/download/v0.3.0/runbeam-macos-aarch64-v0.3.0.tar.gz
-shasum -a 256 runbeam-macos-aarch64-v0.3.0.tar.gz
-
-# Extract and install
-tar -xzf runbeam-macos-aarch64-v0.3.0.tar.gz
-chmod +x runbeam
-mv runbeam /usr/local/bin/
+# Using curl
+curl -fsSL https://raw.githubusercontent.com/aurabx/runbeam-cli/main/install.sh | bash
 ```
 
-#### Linux
+Or with wget:
+
 ```bash
-# Download and verify
-wget https://github.com/aurabx/runbeam-cli/releases/download/v0.3.0/runbeam-linux-x86_64-v0.3.0.tar.gz
-sha256sum runbeam-linux-x86_64-v0.3.0.tar.gz
+# Using wget
+wget -qO- https://raw.githubusercontent.com/aurabx/runbeam-cli/main/install.sh | bash
+```
+
+The script will:
+- Detect your platform and architecture automatically
+- Download the latest release
+- Verify checksums
+- Install to an appropriate location (`~/.local/bin`, `/usr/local/bin`, or `~/bin`)
+- Provide PATH configuration guidance if needed
+
+### Manual Installation
+
+Download prebuilt binaries from [GitHub Releases](https://github.com/aurabx/runbeam-cli/releases):
+
+#### macOS / Linux
+
+```bash
+# Download for your platform (example: macOS Apple Silicon)
+curl -LO https://github.com/aurabx/runbeam-cli/releases/latest/download/runbeam-aarch64-apple-darwin.tar.gz
 
 # Extract and install
-tar -xzf runbeam-linux-x86_64-v0.3.0.tar.gz
+tar -xzf runbeam-aarch64-apple-darwin.tar.gz
 chmod +x runbeam
-sudo mv runbeam /usr/local/bin/
+mv runbeam ~/.local/bin/  # or /usr/local/bin/
 ```
 
 #### Windows
+
 ```powershell
-# Download and verify
-Invoke-WebRequest -Uri https://github.com/aurabx/runbeam-cli/releases/download/v0.3.0/runbeam-windows-x86_64-v0.3.0.zip -OutFile runbeam.zip
-certutil -hashfile runbeam.zip SHA256
-
-# Extract
-Expand-Archive .\runbeam.zip -DestinationPath .
-
-# Add to PATH or move to a directory on PATH
+# Download and extract the ZIP from GitHub Releases
+# Move runbeam.exe to a folder on your PATH
 ```
+
+See the [GitHub Releases page](https://github.com/aurabx/runbeam-cli/releases) for all available platforms.
 
 ### Install from Crates.io
 
@@ -88,10 +96,11 @@ cargo install runbeam-cli
 ### Install from Source
 
 ```bash
-# Clone and build
-git clone https://github.com/aurabx/runbeam-cli.git
-cd runbeam-cli
+# Using a local checkout
 cargo install --path .
+
+# Or install directly from Git
+cargo install --git https://github.com/aurabx/runbeam-cli
 ```
 
 ## Quick Start
@@ -103,23 +112,141 @@ runbeam list
 # Authenticate with Runbeam (opens browser)
 runbeam login
 
+# Verify your authentication token (optional)
+runbeam verify
+
+# Install Harmony (latest version)
+runbeam harmony:install
+
 # Add a Harmony instance
 runbeam harmony:add -i 127.0.0.1 -p 8081 -x admin -l my-harmony
 
-# Authorize the instance
+# Add with a custom encryption key (optional)
+runbeam harmony:add -i 127.0.0.1 -p 8081 -l production --key "AGE-SECRET-KEY-1ABC..."
+
+# Authorize the instance to communicate with Runbeam Cloud
 runbeam harmony:authorize -l my-harmony
+
+# List registered instances
+runbeam harmony:list
 
 # Query instance info
 runbeam harmony:info -l my-harmony
-
-# List all instances
-runbeam harmony:list
+runbeam harmony:pipelines -l my-harmony
+runbeam harmony:routes -l my-harmony
 
 # Logout when done
 runbeam logout
 ```
 
+## Authentication
+
+The CLI uses browser-based OAuth authentication:
+
+```bash
+# Log in (opens browser for authentication)
+runbeam login
+
+# Verify stored authentication token
+runbeam verify
+
+# Log out (clears stored token)
+runbeam logout
+```
+
+### Authentication Flow
+
+1. Run `runbeam login`
+2. Your browser opens to the Runbeam authentication page
+3. Log in with your Runbeam account
+4. Authorize the CLI access
+5. Return to your terminal - you're now authenticated!
+
+### Secure Token Storage
+
+Authentication tokens are stored using encrypted filesystem storage:
+
+- **macOS and Linux**: `~/.runbeam/<instance_id>/auth.json` (encrypted with age encryption)
+- **Windows**: `%APPDATA%\runbeam\<instance_id>\auth.json` (encrypted with age encryption)
+
+Encryption keys are sourced from:
+
+1. `RUNBEAM_ENCRYPTION_KEY` environment variable, or
+2. Auto-generated at `~/.runbeam/<instance_id>/encryption.key`
+
+### Token Verification
+
+The CLI automatically verifies tokens during login using RS256 asymmetric cryptography:
+
+- Tokens are validated using public keys from the JWKS endpoint
+- Supports key rotation via Key ID (`kid`)
+- JWKS keys are cached for 1 hour (configurable via `RUNBEAM_JWKS_TTL` environment variable)
+
+You can manually verify your token at any time:
+
+```bash
+runbeam verify
+```
+
+### Environment Variables
+
+- `RUNBEAM_API_URL`: Override the API base URL (default: `http://runbeam.lndo.site`)
+- `RUNBEAM_JWKS_TTL`: JWKS cache duration in seconds (default: `3600` = 1 hour)
+
+## When to Use Custom Keys
+
+**Use custom encryption keys when:**
+
+- Migrating Harmony instances between machines
+- Implementing key rotation policies
+- Meeting compliance requirements for key management
+- Running multiple Harmony instances with consistent encryption
+
+**Use auto-generated keys (default) when:**
+
+- Running a single local Harmony instance
+- No specific compliance requirements
+- Simplicity is preferred
+
+## Data Directory
+
+The CLI stores configuration data in user-specific files:
+
+- **macOS and Linux**: `~/.runbeam/harmony.json` (Harmony instances), `~/.runbeam/auth.json` (authentication token)
+- **Windows**: `%APPDATA%\runbeam\harmony.json`, `%APPDATA%\runbeam\auth.json`
+
+You can remove entries using the CLI:
+
+```bash
+# Remove by ID
+runbeam harmony:remove --id 1a2b3c4d
+
+# Remove by label
+runbeam harmony:remove -l my-label
+
+# Remove by address
+runbeam harmony:remove -i 127.0.0.1 -p 8081
+```
+
+You may also edit the JSON file directly if needed. Ensure the file remains valid JSON.
+
+## Logging and Verbosity
+
+- Increase verbosity with `-v`, `-vv`, or `-vvv`
+- Quiet mode with `-q`
+- Alternatively set `RUST_LOG` environment variable
+
+Examples:
+
+```bash
+runbeam -v list
+runbeam -q list
+RUST_LOG=debug runbeam list
+```
+
 ## Next Steps
 
+- [Commands Reference →](commands) - Complete command documentation
+- [Authorization Guide →](authorization) - Harmony authorization details
 - [Harmony Proxy →](/harmony) - Learn about Harmony Proxy
 - [Runbeam Cloud →](/runbeam) - Explore Runbeam Cloud
