@@ -7,6 +7,11 @@ const sidebars: SidebarsConfig = {
       id: 'overview',
       label: 'Overview',
     },
+    {
+      type: 'doc',
+      id: 'runbeam-authorization',
+      label: 'Authorizing Gateways',
+    },
   ],
 };
 

@@ -75,6 +75,29 @@ If the token is invalid or expired, a detailed error is shown with guidance to r
 runbeam verify
 ```
 
+### token:get
+
+Get a machine token for a gateway (for CI/CD and environment variable injection).
+
+This command retrieves a machine token without requiring a registered Harmony instance locally. It is designed for out-of-band token generation in CI/CD pipelines or containerized deployments where you need to inject `RUNBEAM_MACHINE_TOKEN` as an environment variable.
+
+The command outputs the token to stdout, making it easy to capture in scripts.
+
+**Options:**
+
+- `-g, --gateway-code <CODE>`: Gateway code (will be created if it doesn't exist).
+- `--raw`: Output only the token (no other output), suitable for scripting.
+
+**Examples:**
+
+```bash
+# Get a token for a specific gateway
+runbeam token:get --gateway-code my-gateway
+
+# Capture token in a variable (using raw mode)
+export RUNBEAM_MACHINE_TOKEN=$(runbeam token:get --gateway-code my-gateway --raw)
+```
+
 ## Configuration Commands
 
 The CLI stores configuration in `~/.runbeam/config.json`. Configuration values have the following precedence (highest to lowest):

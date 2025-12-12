@@ -51,6 +51,11 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'doc',
+      id: 'policies',
+      label: 'Policies',
+    },
+    {
+      type: 'doc',
       id: 'authentication',
       label: 'Authentication',
     },
