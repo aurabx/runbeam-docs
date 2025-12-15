@@ -273,5 +273,5 @@ export RUST_LOG=harmony::router=trace,harmony::middleware=debug,harmony=info
 ## Next Steps
 
 - [Define Pipelines →](./pipelines) - Create request processing pipelines
-- [Configure Services →](../services) - Connect to backends
-- [Configure Middleware →](../middleware) - Set up authentication and transformations
+- [Configure Services →](../components/services.md) - Connect to backends
+- [Configure Middleware →](../components/middleware.md) - Set up authentication and transformations

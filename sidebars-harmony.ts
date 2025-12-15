@@ -40,34 +40,61 @@ const sidebars: SidebarsConfig = {
       ],
     },
     {
-      type: 'doc',
-      id: 'services',
-      label: 'Services',
+      type: 'category',
+      label: 'Components',
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'components/services',
+          label: 'Services',
+        },
+        {
+          type: 'doc',
+          id: 'components/middleware',
+          label: 'Middleware',
+        },
+        {
+          type: 'doc',
+          id: 'components/policies',
+          label: 'Policies',
+        },
+        {
+          type: 'doc',
+          id: 'components/authentication',
+          label: 'Authentication',
+        },
+        {
+          type: 'doc',
+          id: 'components/transforms',
+          label: 'Transforms',
+        },
+      ],
     },
     {
-      type: 'doc',
-      id: 'middleware',
-      label: 'Middleware',
-    },
-    {
-      type: 'doc',
-      id: 'policies',
-      label: 'Policies',
-    },
-    {
-      type: 'doc',
-      id: 'authentication',
-      label: 'Authentication',
-    },
-    {
-      type: 'doc',
-      id: 'transforms',
-      label: 'Transforms',
-    },
-    {
-      type: 'doc',
-      id: 'deployment',
+      type: 'category',
       label: 'Deployment',
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'deployment/deployment',
+          label: 'Deployment',
+        },
+      ],
+    },
+
+    {
+      type: 'category',
+      label: 'Guides',
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'guides/adding-pipelines',
+          label: 'Adding Pipelines',
+        },
+      ],
     },
   ],
 };

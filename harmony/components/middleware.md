@@ -484,7 +484,7 @@ apply = "right"
 ## Next Steps
 
 - [View configuration examples →](./configuration/)
-- [Learn about services and backends →](./services)
-- [Learn about authentication →](./authentication)
-- [Learn about transforms →](./transforms)
+- [Learn about services and backends →](services.md)
+- [Learn about authentication →](authentication.md)
+- [Learn about transforms →](transforms.md)
 - [See complete examples on GitHub →](https://github.com/aurabx/harmony/tree/main/examples)

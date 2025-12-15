@@ -293,7 +293,7 @@ See the [harmony-proxy repository](https://github.com/aurabx/harmony/tree/main/e
 
 ## Next Steps
 
-- [Configure Services →](../services) - Connect to backends
-- [Configure Middleware →](../middleware) - Set up request/response processing
-- [Configure Authentication →](../authentication) - Secure your gateway
-- [Configure Transforms →](../transforms) - Transform data
+- [Configure Services →](../components/services.md) - Connect to backends
+- [Configure Middleware →](../components/middleware.md) - Set up request/response processing
+- [Configure Authentication →](../components/authentication.md) - Secure your gateway
+- [Configure Transforms →](../components/transforms.md) - Transform data

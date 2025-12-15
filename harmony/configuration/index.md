@@ -54,7 +54,7 @@ JOLT specifications for data transformation:
 - Data enrichment
 - Format conversion
 
-[Learn more about Transforms →](../transforms)
+[Learn more about Transforms →](../components/transforms.md)
 
 ## Configuration Flow
 
@@ -128,7 +128,7 @@ url = "http://backend.example.com"
 
 - [System Configuration →](./system) - Configure runtime settings
 - [Pipeline Configuration →](./pipelines) - Define request processing
-- [Services →](../services) - Connect to backends
-- [Middleware →](../middleware) - Set up authentication and transformations
-- [Authentication →](../authentication) - Secure your gateway
-- [Transforms →](../transforms) - Transform data
+- [Services →](../components/services.md) - Connect to backends
+- [Middleware →](../components/middleware.md) - Set up authentication and transformations
+- [Authentication →](../components/authentication.md) - Secure your gateway
+- [Transforms →](../components/transforms.md) - Transform data

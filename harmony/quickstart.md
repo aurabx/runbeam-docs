@@ -93,5 +93,5 @@ Explore the `examples/` directory in the repository to see more.
 Now that you have Harmony running:
 
 1. [Learn about configuration →](./configuration/)
-2. [Understand authentication →](./authentication)
+2. [Understand authentication →](components/authentication.md)
 3. [Deploy to production →](./deployment)
