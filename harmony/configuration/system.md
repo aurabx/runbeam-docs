@@ -99,6 +99,131 @@ bind_address = "127.0.0.1"
 bind_port = 8081
 ```
 
+### HTTPS with TLS
+
+Enable HTTPS (HTTP over TLS) by adding certificate paths to the `http` section:
+
+```toml
+[network.secure]
+enable_wireguard = false
+
+[network.secure.http]
+bind_address = "0.0.0.0"
+bind_port = 443
+cert_path = "/etc/harmony/certs/fullchain.pem"
+key_path = "/etc/harmony/certs/privkey.pem"
+```
+
+**HTTPS Configuration Options:**
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `bind_address` | string | Yes | TCP address to bind (e.g., "0.0.0.0") |
+| `bind_port` | integer | Yes | TCP port (typically 443 for HTTPS) |
+| `cert_path` | string | Optional | Path to TLS certificate chain (PEM format) |
+| `key_path` | string | Optional | Path to TLS private key (PEM format) |
+| `force_https` | boolean | Optional | Force redirect HTTP to HTTPS (default: false) |
+
+**Notes:**
+- When both `cert_path` and `key_path` are provided, HTTPS is automatically enabled
+- Uses TLS 1.3 with HTTP/1.1 and HTTP/2 ALPN
+- Supports PKCS#8 (preferred) and RSA PKCS#1 private key formats
+- Without certificates, the network runs plain HTTP
+
+#### Generating Test Certificates
+
+For development/testing, generate self-signed certificates:
+
+```bash
+openssl req -x509 -newkey rsa:4096 -nodes \
+  -keyout key.pem -out cert.pem -days 365 \
+  -subj "/CN=localhost"
+```
+
+**For production**, use:
+- Let's Encrypt (certbot) for free certificates
+- Your organization's certificate authority
+
+#### Private Key Security
+
+**Supported Key Formats:**
+- PKCS#8 unencrypted (RSA and ECDSA) - preferred format
+- RSA PKCS#1 unencrypted (legacy format)
+
+**Supported Key Algorithms:**
+- RSA (2048, 3072, 4096 bit)
+- ECDSA (P-256, P-384, P-521 curves)
+
+**Encrypted Keys Not Supported:**
+
+Harmony does not support encrypted private keys. If you have encrypted keys, decrypt them first or store them in a secure mount.
+
+```bash
+# Decrypt PKCS#8 encrypted key
+openssl pkcs8 -in encrypted_key.pem -out key.pem
+
+# Decrypt RSA encrypted key (legacy format)
+openssl rsa -in encrypted_rsa_key.pem -out key.pem
+
+# Secure the unencrypted key
+chmod 600 key.pem
+chown harmony:harmony key.pem
+```
+
+**Security Best Practices:**
+
+1. **File System Permissions** (primary security):
+   ```bash
+   chmod 600 /etc/harmony/certs/privkey.pem
+   chown harmony:harmony /etc/harmony/certs/privkey.pem
+   ```
+
+2. **Secret Management** (recommended for production):
+   - HashiCorp Vault
+   - AWS Secrets Manager / Azure Key Vault / Google Cloud Secret Manager
+   - Docker secrets or Kubernetes secrets
+
+3. **Automated Certificate Management**:
+   - Use certbot with Let's Encrypt
+   - Set up renewal hooks to reload Harmony
+   - Monitor certificate expiration
+
+4. **Key Rotation**:
+   - Rotate keys periodically (e.g., annually)
+   - Use hot reload for zero-downtime certificate updates
+
+### HTTP to HTTPS Redirect
+
+Force all HTTP requests to redirect to HTTPS:
+
+```toml
+# Port 80: Redirects to HTTPS
+[network.redirect]
+enable_wireguard = false
+
+[network.redirect.http]
+bind_address = "0.0.0.0"
+bind_port = 80
+force_https = true
+
+# Port 443: Serves HTTPS
+[network.secure]
+enable_wireguard = false
+
+[network.secure.http]
+bind_address = "0.0.0.0"
+bind_port = 443
+cert_path = "/etc/harmony/certs/fullchain.pem"
+key_path = "/etc/harmony/certs/privkey.pem"
+```
+
+**How `force_https` works:**
+- Returns HTTP 301 (Moved Permanently) redirect
+- Redirects to `https://` equivalent URL
+- Preserves original path and query parameters
+- Only applies when TLS is NOT configured (no cert/key paths)
+- Uses `Host` header to construct the HTTPS URL
+
 ### HTTP/3 (QUIC) Listener
 
 Enable HTTP/3 support on a network by adding an `http3` section. HTTP/3 uses QUIC over UDP and requires TLS certificates:
