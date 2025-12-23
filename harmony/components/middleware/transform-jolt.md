@@ -29,6 +29,35 @@ fail_on_error = true
 - Normalize API request/response structures
 - Extract or reshape data fields
 
+## Example pipeline
+
+```toml
+[pipelines.fhir_transform]
+description = "Transform FHIR resources"
+networks = ["default"]
+endpoints = ["fhir_api"]
+middleware = ["transform_request", "transform_response"]
+backends = ["fhir_server"]
+
+[endpoints.fhir_api]
+service = "http"
+
+[middleware.transform_request]
+type = "transform"
+[middleware.transform_request.options]
+spec_path = "transforms/patient_request.json"
+apply = "left"
+
+[middleware.transform_response]
+type = "transform"
+[middleware.transform_response.options]
+spec_path = "transforms/patient_response.json"
+apply = "right"
+
+[backends.fhir_server]
+service = "http"
+```
+
 ## Related
 
 - [← Middleware](../middleware.md)

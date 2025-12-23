@@ -57,6 +57,28 @@ apply = "both"  # Flatten on request, unflatten on response
 - Round-trip transformations: flatten for processing, unflatten for DICOM compliance
 - DICOM data export to simplified formats
 
+## Example pipeline
+
+```toml
+[pipelines.dicom_simplified]
+description = "Flatten DICOM for frontend consumption"
+networks = ["default"]
+endpoints = ["dicom_api"]
+middleware = ["flatten"]
+backends = ["dicom_scp"]
+
+[endpoints.dicom_api]
+service = "http"
+
+[middleware.flatten]
+type = "dicom_flatten"
+[middleware.flatten.options]
+apply = "right"  # Flatten responses only
+
+[backends.dicom_scp]
+service = "dicom_scp"
+```
+
 ## Related
 
 - [← Middleware](../middleware.md)

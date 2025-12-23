@@ -30,6 +30,28 @@ Authentication failures return HTTP `401 Unauthorized`.
 
 Only use with HTTPS in production.
 
+## Example pipeline
+
+```toml
+[pipelines.secure_api]
+description = "API with basic authentication"
+networks = ["default"]
+endpoints = ["http_api"]
+middleware = ["auth"]
+backends = ["api_server"]
+
+[endpoints.http_api]
+service = "http"
+
+[middleware.auth]
+type = "basic_auth"
+username = "admin"
+password = "secure_password"
+
+[backends.api_server]
+service = "http"
+```
+
 ## Related
 
 - [← Middleware](../middleware.md)

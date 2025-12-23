@@ -33,6 +33,28 @@ rules = ["/ImagingStudy", "/Patient", "/Patient/{id}"]
 - Restrict access to certain API paths
 - Implement coarse-grained authorization
 
+## Example pipeline
+
+```toml
+[pipelines.restricted_fhir]
+description = "FHIR API with path restrictions"
+networks = ["default"]
+endpoints = ["fhir_api"]
+middleware = ["path_filter"]
+backends = ["fhir_server"]
+
+[endpoints.fhir_api]
+service = "http"
+
+[middleware.path_filter]
+type = "path_filter"
+[middleware.path_filter.options]
+rules = ["/Patient", "/Patient/{id}", "/ImagingStudy", "/ImagingStudy/{id}"]
+
+[backends.fhir_server]
+service = "http"
+```
+
 ## Related
 
 - [← Middleware](../middleware.md)

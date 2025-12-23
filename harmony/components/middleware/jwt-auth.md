@@ -61,6 +61,30 @@ leeway_secs = 60
 - Authentication failures (missing/invalid/expired tokens) return HTTP `401`
 - Internal errors (key parsing, config issues) return HTTP `500`
 
+## Example pipeline
+
+```toml
+[pipelines.protected_fhir]
+description = "FHIR API with JWT authentication"
+networks = ["default"]
+endpoints = ["fhir_api"]
+middleware = ["jwt_auth"]
+backends = ["fhir_server"]
+
+[endpoints.fhir_api]
+service = "http"
+
+[middleware.jwt_auth]
+type = "jwt_auth"
+public_key_path = "/etc/harmony/jwt_public.pem"
+issuer = "https://auth.example.com/"
+audience = "fhir-api"
+leeway_secs = 60
+
+[backends.fhir_server]
+service = "http"
+```
+
 ## Related
 
 - [← Middleware](../middleware.md)

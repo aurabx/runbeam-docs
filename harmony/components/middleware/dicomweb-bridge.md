@@ -54,6 +54,30 @@ Features:
 
 Enables DICOMweb endpoints to communicate with traditional DICOM PACS systems via DIMSE protocols.
 
+## Example pipeline
+
+```toml
+[pipelines.dicomweb_to_pacs]
+description = "DICOMweb API to DICOM PACS bridge"
+networks = ["default"]
+endpoints = ["dicomweb_api"]
+middleware = ["dicomweb_bridge"]
+backends = ["pacs_scp"]
+
+[endpoints.dicomweb_api]
+service = "http"
+
+[middleware.dicomweb_bridge]
+type = "dicomweb_bridge"
+
+[backends.pacs_scp]
+service = "dicom_scp"
+[backends.pacs_scp.options]
+aet = "PACS_SCP"
+host = "pacs.example.com"
+port = 11112
+```
+
 ## Related
 
 - [← Middleware](../middleware.md)

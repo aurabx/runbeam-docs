@@ -53,6 +53,41 @@ Output includes:
 - Use `RUST_LOG=harmony.dump=info` to enable just dump logs (or `debug` for more verbose)
 - Standard log filtering applies (can be directed to different files/destinations)
 
+## Example pipeline
+
+```toml
+[pipelines.debug_transforms]
+description = "Debug pipeline with log dumps"
+networks = ["default"]
+endpoints = ["api"]
+middleware = ["dump_request", "transform", "dump_response"]
+backends = ["backend"]
+
+[endpoints.api]
+service = "http"
+
+[middleware.dump_request]
+type = "log_dump"
+[middleware.dump_request.options]
+apply = "left"
+label = "before_transform"
+redact_headers = ["authorization"]
+
+[middleware.transform]
+type = "transform"
+[middleware.transform.options]
+spec_path = "transforms/my_transform.json"
+
+[middleware.dump_response]
+type = "log_dump"
+[middleware.dump_response.options]
+apply = "right"
+label = "after_transform"
+
+[backends.backend]
+service = "http"
+```
+
 ## Related
 
 - [← Middleware](../middleware.md)

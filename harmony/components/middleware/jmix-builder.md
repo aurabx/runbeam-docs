@@ -42,6 +42,29 @@ skip_listing = true   # Skip DICOM files from files.json manifest
 
 Automatically converts DICOM responses into distributable JMIX packages for medical imaging workflows.
 
+## Example pipeline
+
+```toml
+[pipelines.dicom_to_jmix]
+description = "DICOM to JMIX package conversion"
+networks = ["default"]
+endpoints = ["jmix_api"]
+middleware = ["jmix_builder"]
+backends = ["dicom_scp"]
+
+[endpoints.jmix_api]
+service = "http"
+
+[middleware.jmix_builder]
+type = "jmix_builder"
+[middleware.jmix_builder.options]
+skip_hashing = true
+skip_listing = true
+
+[backends.dicom_scp]
+service = "dicom_scp"
+```
+
 ## Related
 
 - [← Middleware](../middleware.md)
