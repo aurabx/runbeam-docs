@@ -58,7 +58,8 @@ This ensures only actual authentication problems return 401, while configuration
 ### Healthcare-specific
 
 - [JMIX Builder →](./middleware/jmix-builder.md) - Build JMIX packages from DICOM operation responses.
-- [DICOMweb Bridge →](./middleware/dicomweb-bridge.md) - Bridge DICOMweb (QIDO/WADO) to DIMSE operations.
+- [DICOMweb to DICOM →](./middleware/dicomweb-bridge.md) - Bridge DICOMweb (QIDO/WADO) to DIMSE operations.
+- [DICOM to DICOMweb →](./middleware/dicom-to-dicomweb.md) - Bridge DIMSE operations to DICOMweb (QIDO/STOW/WADO).
 - [DICOM Flatten →](./middleware/dicom-flatten.md) - Flatten/unflatten DICOM JSON for simplified processing.
 
 ### Debugging

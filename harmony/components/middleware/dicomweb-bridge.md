@@ -1,8 +1,8 @@
 ---
-sidebar_label: DICOMweb Bridge
+sidebar_label: DICOMweb to DICOM
 ---
 
-# DICOMweb Bridge
+# DICOMweb to DICOM
 
 Bridges DICOMweb HTTP requests (QIDO-RS/WADO-RS) to DICOM operations and converts responses back to DICOMweb format.
 

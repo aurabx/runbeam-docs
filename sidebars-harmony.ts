@@ -91,7 +91,12 @@ const sidebars: SidebarsConfig = {
             {
               type: 'doc',
               id: 'components/middleware/dicomweb-bridge',
-              label: 'DICOMweb Bridge',
+              label: 'DICOMweb to DICOM',
+            },
+            {
+              type: 'doc',
+              id: 'components/middleware/dicom-to-dicomweb',
+              label: 'DICOM to DICOMweb',
             },
             {
               type: 'doc',
