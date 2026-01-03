@@ -12,6 +12,21 @@ const sidebars: SidebarsConfig = {
       id: 'runbeam-authorization',
       label: 'Authorizing Gateways',
     },
+    {
+      type: 'doc',
+      id: 'providers',
+      label: 'Providers',
+    },
+    {
+      type: 'doc',
+      id: 'references',
+      label: 'References',
+    },
+    {
+      type: 'doc',
+      id: 'meshes',
+      label: 'Meshes',
+    },
   ],
 };
 

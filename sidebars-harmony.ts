@@ -42,6 +42,16 @@ const sidebars: SidebarsConfig = {
           id: 'configuration/mesh',
           label: 'Data Mesh',
         },
+        {
+          type: 'doc',
+          id: 'configuration/providers',
+          label: 'Providers',
+        },
+        {
+          type: 'doc',
+          id: 'configuration/references',
+          label: 'References',
+        },
       ],
     },
     {

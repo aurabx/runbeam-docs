@@ -305,14 +305,48 @@ When a mesh request is processed:
    - Validates JWT token against mesh membership
    - Routes request to the referenced endpoint
 
+## Provider-Based References
+
+Meshes can include resources from remote providers using [resource references](./references.md). This enables cross-gateway and cross-team mesh networking.
+
+### Reference Syntax
+
+Use the provider reference format to include remote resources:
+
+```toml
+[mesh.cross-org-mesh]
+type = "http3"
+provider = "runbeam"
+auth_type = "jwt"
+ingress = [
+    "local.name.local-api-ingress",                       # Local resource
+    "runbeam.partner-team.ingress.name.their-api"         # Remote resource
+]
+egress = [
+    "local.name.local-backend-egress",                    # Local resource  
+    "runbeam.partner-team.egress.name.their-backend"      # Remote resource
+]
+```
+
+### Remote Resource Resolution
+
+When a mesh includes provider references:
+
+1. At startup, Harmony validates that all referenced providers exist
+2. At runtime, remote resources are fetched from the provider API
+3. Results are cached to minimize API calls
+
+See [Resource References](./references.md) for complete documentation.
+
 ## Validation
 
 Harmony validates mesh configuration at startup:
 
-- Ingress must have at least one URL
+- Ingress must have at least one URL (for local ingresses)
 - If endpoint is specified, it must exist in the pipeline
 - If backend is specified, it must exist in the pipeline
 - Mesh must reference valid ingress and egress definitions
 - URLs must be properly formatted
+- Provider references must use valid, configured providers
 
 Invalid configurations will cause startup to fail with descriptive error messages.

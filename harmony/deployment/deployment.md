@@ -147,14 +147,37 @@ sudo systemctl start harmony
 
 ### Environment Variables
 
-Store secrets in environment variables:
+Store secrets and configuration in environment variables:
 
 ```bash
 # /etc/harmony/environment
 RUNBEAM_ENCRYPTION_KEY=AGE-SECRET-KEY-...
 RUNBEAM_MACHINE_TOKEN='{"machine_token":"mt_..."}'
 RUST_LOG=info
+
+# Optional: Push local config to Runbeam Cloud on startup
+RUNBEAM_PUSH_CONFIG_ON_STARTUP=true
 ```
+
+#### Cloud Sync Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `RUNBEAM_MACHINE_TOKEN` | - | Machine token JSON for authentication |
+| `RUNBEAM_ENCRYPTION_KEY` | - | Age encryption key for secure storage |
+| `RUNBEAM_PUSH_CONFIG_ON_STARTUP` | `false` | Push local config to Runbeam Cloud on startup |
+| `RUNBEAM_ACCEPT_INVALID_CERTS` | `false` | Accept invalid SSL certs (dev only) |
+
+#### Push Config on Startup
+
+When `RUNBEAM_PUSH_CONFIG_ON_STARTUP=true`, Harmony will push its local configuration to Runbeam Cloud immediately after connecting. This ensures the cloud always has an accurate view of what each gateway is running.
+
+**Use cases:**
+- Pre-provisioned deployments where config is baked into the image
+- GitOps workflows where config is managed in version control
+- Ensuring cloud and gateway configs stay in sync
+
+**Note:** This is disabled by default to prevent accidental overwrites of cloud-managed configurations.
 
 ### Secret Managers
 
