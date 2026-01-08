@@ -117,6 +117,7 @@ When the Runbeam provider is your primary provider and polling is enabled:
 - Configuration changes sync automatically from Runbeam Cloud
 - Gateway must be authorized via the Management API
 - Changes are hot-reloaded without restart
+- Transform specifications are automatically downloaded before applying configurations
 
 ## Current Limitations
 
@@ -153,6 +154,72 @@ poll_interval_secs = 30
 
 The legacy `[runbeam]` section is still supported for backward compatibility but is deprecated.
 
+## Configuration Polling
+
+When configured as the primary provider, a remote provider automatically polls for configuration changes at regular intervals.
+
+### How It Works
+
+1. Gateway polls provider API every `poll_interval_secs` seconds
+2. API returns list of pending changes for this gateway
+3. Changes are processed sequentially in chronological order (oldest first)
+4. For each change:
+   - Fetch full change details (including TOML content)
+   - Acknowledge receipt to provider
+   - Validate and apply to local files
+   - Report success/failure back to provider
+
+### Change Processing
+
+Changes are applied using the same hot-reload mechanism as file-based changes:
+
+- **Zero-downtime changes**: Middleware, routes, backends updated immediately
+- **Adapter restarts**: Network changes require brief interruption (~1-2s)
+
+See [Hot Configuration Reload](./hot-reload.md) for detailed reload behavior.
+
+### Automatic Transform Download
+
+When cloud-sourced configuration references transform middleware, Harmony automatically downloads the JOLT specifications before applying the configuration.
+
+This ensures all transform files are available and up-to-date before configuration is applied, preventing runtime errors due to missing transform files.
+
+### Push Configuration on Startup
+
+As of v0.12.0, Harmony can push its local configuration to Runbeam Cloud on startup. This is useful for:
+- Pre-provisioned deployments where local config is the source of truth
+- Syncing local changes to the cloud after manual edits
+- Bootstrapping cloud-managed gateways with initial configuration
+
+**Enable push-on-startup:**
+
+```bash
+export RUNBEAM_PUSH_CONFIG_ON_STARTUP=true
+```
+
+Or in Docker:
+
+```yaml
+environment:
+  - RUNBEAM_PUSH_CONFIG_ON_STARTUP=true
+  - RUNBEAM_MACHINE_TOKEN=${RUNBEAM_MACHINE_TOKEN}
+```
+
+**How it works:**
+
+1. Gateway starts and loads local configuration
+2. If cloud integration is enabled and gateway is authorized:
+   - Local configuration is pushed to Runbeam Cloud
+   - Cloud creates Change records for the pushed configs
+   - Normal polling loop picks up cloud-assigned IDs
+   - Gateway stays in sync with cloud-managed configuration
+
+**Notes:**
+- Disabled by default (`RUNBEAM_PUSH_CONFIG_ON_STARTUP=false`)
+- Requires valid machine token (via environment or storage)
+- Does not block startup - config push happens asynchronously
+- Failures are logged but don't prevent polling from starting
+
 ## Cloud Integration
 
 When using a remote provider like Runbeam:
@@ -160,6 +227,7 @@ When using a remote provider like Runbeam:
 1. **Authorization**: The gateway must be authorized before polling works
 2. **Token Storage**: Machine tokens are stored securely in `~/.runbeam/<proxy_id>/`
 3. **Hot Reload**: Configuration changes are applied without restart
+4. **Push on Startup**: Optionally push local config to cloud on startup (v0.12.0+)
 
 See [Connecting to Runbeam](../components/connecting-to-runbeam.md) for authorization details.
 

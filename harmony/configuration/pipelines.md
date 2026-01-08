@@ -160,6 +160,33 @@ middleware = [
 ]
 ```
 
+### Split Middleware Configuration (v0.9.0+)
+
+You can configure different middleware for request and response paths using split configuration:
+
+```toml
+[pipelines.my_pipeline]
+description = "Pipeline with split middleware"
+networks = ["default"]
+endpoints = ["api"]
+backends = ["backend"]
+
+[pipelines.my_pipeline.middleware]
+left = ["auth", "validate"]      # Request path only
+right = ["transform", "log"]     # Response path only
+```
+
+**Execution order:**
+- **Left chain (request)**: Executes in order as request flows to backend
+- **Right chain (response)**: Executes in exact order specified (not reversed)
+
+**Use cases:**
+- Request-only validation: `left = ["auth", "rate_limit"]` with empty right chain
+- Response-only transforms: Empty left chain with `right = ["flatten", "log"]`
+- Asymmetric processing: Different middleware on each side
+
+**Note:** When using split configuration, middleware `apply` options (like `apply = "left"` in transform middleware) are ignored—the pipeline configuration controls which side the middleware runs on.
+
 ## Backends
 
 Backends define where requests are sent:

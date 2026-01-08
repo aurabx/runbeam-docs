@@ -309,6 +309,15 @@ See the [Authentication Guide](components/authentication.md) for details on gene
 
 ## Verification
 
+Test that Harmony is installed correctly:
+
+```bash
+# Check version
+harmony --version
+# or short form
+harmony -v
+```
+
 Test that Harmony is running:
 
 ```bash

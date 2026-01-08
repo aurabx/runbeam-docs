@@ -23,6 +23,9 @@ apply = "both"  # Flatten on request, unflatten on response
 
 ### Flatten (left side)
 
+As of v0.12.0, the DICOM flatten middleware supports operation on the left side (request path) of the pipeline. This allows you to flatten DICOM data before it reaches the backend.
+
+**When applied on the left side:**
 - Converts standard DICOM JSON with `{vr, Value}` structure to simple key-value pairs
 - Tag ID → scalar value or nested structure for sequences
 - Person Name (PN) VR: Extracts "Alphabetic" field

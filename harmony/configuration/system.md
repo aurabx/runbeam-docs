@@ -58,10 +58,15 @@ Basic gateway identity and file locations:
 
 ```toml
 [proxy]
-id = "harmony-gateway"           # Unique gateway identifier
+id = "harmony-gateway"           # Unique gateway identifier (required)
 pipelines_path = "pipelines"      # Directory containing pipeline files
 transforms_path = "transforms"    # Directory containing JOLT transforms
 ```
+
+**Fields:**
+- `id` (string, required) - Unique identifier for this gateway instance. Used for cloud integration, machine token storage, and identifying the gateway in logs and monitoring systems. Added in v0.12.0.
+- `pipelines_path` (string, optional) - Directory containing pipeline configuration files (default: `"pipelines"`)
+- `transforms_path` (string, optional) - Directory containing JOLT transform specifications (default: `"transforms"`)
 
 ## Network Configuration
 
@@ -338,6 +343,7 @@ Register available service types for endpoints and backends:
 
 ```toml
 [services.http]
+id = "http-service-v1"  # Optional: unique service instance identifier (v0.12.0+)
 module = ""
 
 [services.http3]
@@ -354,6 +360,9 @@ module = ""
 ```
 
 These definitions make services available for use in pipeline configurations.
+
+**Optional Fields (v0.12.0+):**
+- `id` (string, optional) - Unique identifier for the service instance. Useful for tracking and debugging when running multiple instances of the same service type.
 
 ## Middleware Types
 
@@ -377,21 +386,50 @@ These definitions make middleware available for use in pipeline configurations.
 
 ## Hot Reload
 
-Harmony automatically detects changes to `config.toml` and reloads configuration:
+Harmony automatically detects changes to `config.toml` and pipeline files, reloading configuration without requiring a restart. A file watcher monitors changes with a 200ms debounce.
+
+**How it works:**
+1. File watcher detects configuration changes
+2. Changes are validated before applying
+3. Diff computed to classify change impact
+4. Configuration applied based on change type
+5. Invalid configs are rejected, previous config retained
 
 ### Zero-Downtime Changes
 
-These changes apply immediately without interruption:
+These changes apply immediately via atomic config swap without interruption:
+- Middleware configuration (transforms, auth rules, path filters)
+- Route definitions (endpoints, backends, pipelines)
+- Backend URLs and timeouts
 - Logging settings
 - Storage configuration
 - Service/middleware type registrations
+- Mesh definitions (provider, auth, ingress/egress lists)
+- JWT secrets (picked up on next request)
 
 ### Requires Adapter Restart
 
-These changes require restarting affected network adapters (brief ~1-2s interruption):
+These changes require selective restart of affected network adapters (brief ~1-2s interruption):
 - Network bind addresses or ports
 - Adding/removing networks
-- WireGuard configuration
+- WireGuard settings
+- Protocol-specific adapter settings
+- TLS certificate paths
+
+**Monitoring:**
+
+Watch logs for reload events:
+```
+📡 Watching config file for changes: config.toml
+✓ Config reloaded successfully
+  Zero-downtime changes: ["middleware", "endpoints"]
+```
+
+For adapter restarts:
+```
+✓ Config reloaded successfully
+  Networks restarted: ["default"]
+```
 
 ## Environment Variables
 

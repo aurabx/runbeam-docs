@@ -123,6 +123,11 @@ const sidebars: SidebarsConfig = {
               id: 'components/middleware/log-dump',
               label: 'Log Dump',
             },
+            {
+              type: 'doc',
+              id: 'components/middleware/webhook',
+              label: 'Webhook',
+            },
           ],
         },
         {

@@ -327,6 +327,7 @@ A DICOM DIMSE backend for connecting to remote DICOM PACS via C-ECHO/C-FIND/C-MO
 - `C-FIND` - Query for studies/series/images
 - `C-MOVE` - Request dataset transfer
 - `C-GET` - Retrieve datasets
+- `C-STORE` - Send DICOM datasets (added in v0.12.0)
 
 **Configuration options:**
 - `aet` (string, required): Remote Application Entity Title
