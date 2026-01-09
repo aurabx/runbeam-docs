@@ -176,7 +176,7 @@ Changes are applied using the same hot-reload mechanism as file-based changes:
 - **Zero-downtime changes**: Middleware, routes, backends updated immediately
 - **Adapter restarts**: Network changes require brief interruption (~1-2s)
 
-See [Hot Configuration Reload](./hot-reload.md) for detailed reload behavior.
+See [Hot Reload](./system#hot-reload) for detailed reload behavior.
 
 ### Automatic Transform Download
 
