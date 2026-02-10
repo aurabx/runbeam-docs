@@ -39,6 +39,7 @@ Work with your team on integration projects:
 - **Team Workspaces** - Isolate projects and environments
 - **Audit Logging** - Track configuration changes
 - **API Access** - Programmatic configuration management
+- **MCP Service** - Manage configuration from AI tools via MCP
 
 ### Security & Authentication
 
@@ -80,6 +81,8 @@ Runbeam Cloud provides a RESTful API for programmatic access:
 - **Token Management** - Issue and revoke access tokens
 
 Use the [Runbeam SDK](/sdk) or [CLI](/cli) to interact with the API.
+
+For AI agent integrations, see the [MCP Service](/runbeam/mcp).
 
 ## Next Steps
 

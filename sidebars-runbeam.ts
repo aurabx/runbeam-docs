@@ -27,6 +27,11 @@ const sidebars: SidebarsConfig = {
       id: 'meshes',
       label: 'Meshes',
     },
+    {
+      type: 'doc',
+      id: 'mcp',
+      label: 'MCP Service',
+    },
   ],
 };
 
