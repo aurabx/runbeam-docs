@@ -1,5 +1,5 @@
-import React from 'react';
-import styles from './AISearchButton.module.css';
+import React from "react";
+import styles from "./AISearchButton.module.css";
 
 interface AISearchButtonProps {
   onClick?: () => void;
@@ -8,6 +8,11 @@ interface AISearchButtonProps {
 const AISearchButton: React.FC<AISearchButtonProps> = ({ onClick }) => {
   const handleClick = () => {
     if (onClick) {
+      document.dispatchEvent(
+        new CustomEvent("toggle-entangle-model", {
+          detail: { source: "navbar" },
+        }),
+      );
       onClick();
     }
   };
