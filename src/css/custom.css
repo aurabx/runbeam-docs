@@ -37,6 +37,9 @@
   
   /* Background */
   --ifm-background-color: #ffffff;
+  
+  /* navbar z index */
+  --ifm-z-index-fixed: 30;
 }
 
 /* Dark mode colors */
